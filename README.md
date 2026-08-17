@@ -18,8 +18,8 @@ npm run dev      # http://localhost:3000
 npm run build && npm run start   # production
 ```
 
-All six routes prerender as **static** HTML, so the site can also be hosted on
-any static host or CDN.
+All ten routes (five pages x two locales) prerender as static HTML, but the app
+still runs on Node — see Deployment below.
 
 ---
 
@@ -134,9 +134,9 @@ See `CONTENT-TO-CONFIRM.md` §6 for the one known brand-colour contrast trade-of
 Exactly five fields: **Name, Phone, Email, Select Product, Message.** Do not add
 location, area, timeline, company or project-type fields.
 
-It currently opens the visitor's mail client with the enquiry pre-filled, so it
-works with no backend. To post to a real endpoint, replace the body of
-`handleSubmit` in `src/components/forms/QuoteForm.tsx`.
+Submissions are written to the `enquiries` table in Supabase via the publishable
+key. RLS allows INSERT only, so the browser can never read or alter enquiries.
+See `src/lib/supabase.ts`.
 
 Product pages deep-link into it: `/contact?product=Smart%20Film` preselects that
 product.
