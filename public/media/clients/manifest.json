@@ -1,0 +1,116 @@
+[
+  {
+    "slug": "anantara",
+    "label": "Anantara Hotels Resorts Spas",
+    "w": 506,
+    "h": 260
+  },
+  {
+    "slug": "arabian-ranches",
+    "label": "Arabian Ranches",
+    "w": 509,
+    "h": 260
+  },
+  {
+    "slug": "atlantis",
+    "label": "Atlantis The Palm Dubai",
+    "w": 486,
+    "h": 260
+  },
+  {
+    "slug": "damac",
+    "label": "DAMAC",
+    "w": 640,
+    "h": 81
+  },
+  {
+    "slug": "dafza",
+    "label": "Dubai Airport Freezone",
+    "w": 463,
+    "h": 260
+  },
+  {
+    "slug": "dubai-cranes",
+    "label": "Dubai Cranes",
+    "w": 640,
+    "h": 70
+  },
+  {
+    "slug": "dubai-driving-center",
+    "label": "Dubai Driving Center",
+    "w": 640,
+    "h": 166
+  },
+  {
+    "slug": "dubizzle",
+    "label": "dubizzle",
+    "w": 640,
+    "h": 200
+  },
+  {
+    "slug": "emaar",
+    "label": "EMAAR",
+    "w": 261,
+    "h": 260
+  },
+  {
+    "slug": "hms-mirdif",
+    "label": "HMS Mirdif Hospital",
+    "w": 382,
+    "h": 260
+  },
+  {
+    "slug": "ibn-battuta-mall",
+    "label": "Ibn Battuta Mall",
+    "w": 601,
+    "h": 260
+  },
+  {
+    "slug": "ja-the-resort",
+    "label": "JA The Resort Golf Course Dubai",
+    "w": 298,
+    "h": 260
+  },
+  {
+    "slug": "jafza",
+    "label": "JAFZA",
+    "w": 343,
+    "h": 260
+  },
+  {
+    "slug": "medcare",
+    "label": "Medcare Hospitals and Medical Centres",
+    "w": 640,
+    "h": 172
+  },
+  {
+    "slug": "nmc-health",
+    "label": "NMC Health",
+    "w": 640,
+    "h": 97
+  },
+  {
+    "slug": "omniyat",
+    "label": "Omniyat",
+    "w": 640,
+    "h": 98
+  },
+  {
+    "slug": "radisson",
+    "label": "Radisson Hotel Group",
+    "w": 640,
+    "h": 145
+  },
+  {
+    "slug": "the-dubai-mall",
+    "label": "The Dubai Mall",
+    "w": 260,
+    "h": 260
+  },
+  {
+    "slug": "zoya",
+    "label": "Zoya Health and Wellbeing Resort",
+    "w": 460,
+    "h": 260
+  }
+]
