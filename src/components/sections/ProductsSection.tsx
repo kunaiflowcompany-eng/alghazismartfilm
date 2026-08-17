@@ -1,3 +1,6 @@
+"use client";
+
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import Image from "next/image";
 import Link from "next/link";
 import { AutoVideo } from "@/components/media/AutoVideo";
@@ -7,11 +10,11 @@ import { Button } from "@/components/ui/Button";
 import { type Product } from "@/content/products";
 import { getProducts } from "@/content/localized";
 import { getDictionary } from "@/i18n";
-import { localePath, type Locale } from "@/i18n/config";
 import { cn } from "@/lib/cn";
 
-function ProductCard({ product, feature = false, locale }: { product: Product; feature?: boolean; locale: Locale }) {
-  const href = `${localePath("/products", locale)}#${product.slug}`;
+function ProductCard({ product, feature = false }: { product: Product; feature?: boolean }) {
+  const locale = useLocale();
+  const href = `/products#${product.slug}`;
   const t = getDictionary(locale).common;
 
   return (
@@ -70,7 +73,8 @@ function ProductCard({ product, feature = false, locale }: { product: Product; f
   );
 }
 
-export function ProductsSection({ locale }: { locale: Locale }) {
+export function ProductsSection() {
+  const locale = useLocale();
   const d = getDictionary(locale);
   const t = d.productsSection;
   const products = getProducts(locale);
@@ -94,13 +98,13 @@ export function ProductsSection({ locale }: { locale: Locale }) {
         <div className="mt-12 grid gap-5 lg:mt-16 lg:grid-cols-2">
           {[smartGlass, smartFilm, ...rest].map((p, i) => (
             <div key={p.slug} className="reveal relative" data-reveal-delay={(i % 2) * 100}>
-              <ProductCard product={p} feature locale={locale} />
+              <ProductCard product={p} feature />
             </div>
           ))}
         </div>
 
         <div className="reveal mt-12 flex justify-center">
-          <Button href={localePath("/products", locale)} variant="outline" size="lg">
+          <Button href={"/products"} variant="outline" size="lg">
             {d.common.exploreAllProducts}
           </Button>
         </div>

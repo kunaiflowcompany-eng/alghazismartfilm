@@ -1,9 +1,11 @@
+"use client";
+
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { clients, type Client } from "@/content/clients";
 import { getDictionary } from "@/i18n";
-import type { Locale } from "@/i18n/config";
 
 /**
  * Trust wall.
@@ -83,7 +85,8 @@ function LogoRow({
   );
 }
 
-export function ClientsSection({ locale }: { locale: Locale }) {
+export function ClientsSection() {
+  const locale = useLocale();
   const t = getDictionary(locale).clients;
   // Exactly two rows, split down the middle
   const half = Math.ceil(clients.length / 2);

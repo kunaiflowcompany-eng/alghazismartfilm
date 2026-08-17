@@ -2,18 +2,13 @@
  * Plain ESM JavaScript rather than TypeScript.
  *
  * Hostinger's build image ships glibc < 2.29, so Next's native SWC binary
- * (@next/swc-linux-x64-gnu) cannot load and the build falls back to WASM. That
- * fallback fails to compile a TypeScript config, which killed the deploy with
- * ERR_MODULE_NOT_FOUND. A .mjs config needs no compilation step at all.
- *
- * For the same reason `defaultLocale` is inlined below instead of imported from
- * src/i18n/config.ts — importing a TypeScript module from here would reintroduce
- * the compile step. The literal must stay in step with `defaultLocale` in
- * src/i18n/config.ts (currently "en").
+ * cannot load and the build falls back to WASM. That fallback cannot compile a
+ * TypeScript config, which aborted the deploy with ERR_MODULE_NOT_FOUND.
+ * A .mjs config needs no compilation step at all.
  */
 
-/** Mirrors `defaultLocale` in src/i18n/config.ts */
-const defaultLocale = "en";
+/** Public routes, used to build the legacy /en and /ar redirects below. */
+const PAGES = ["/about", "/products", "/applications", "/contact"];
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -25,15 +20,26 @@ const nextConfig = {
   },
   devIndicators: false,
 
-  // Send the bare root and the pre-i18n paths to the default locale so older
-  // links keep working after routes moved under /[locale].
+  /*
+   * URLs are locale-free: language is client state, not a route segment. The
+   * old /en and /ar prefixes 308-redirect to their clean equivalent so any
+   * indexed or shared link keeps working and no duplicate page stays reachable.
+   *
+   * There is deliberately NO "/" -> "/en" redirect: the homepage must serve
+   * directly at "/".
+   */
   async redirects() {
-    const paths = ["", "/about", "/products", "/applications", "/contact"];
-    return paths.map((p) => ({
-      source: p === "" ? "/" : p,
-      destination: `/${defaultLocale}${p}`,
-      permanent: false,
-    }));
+    const locales = ["en", "ar"];
+    const list = [];
+
+    for (const locale of locales) {
+      list.push({ source: `/${locale}`, destination: "/", permanent: true });
+      for (const page of PAGES) {
+        list.push({ source: `/${locale}${page}`, destination: page, permanent: true });
+      }
+    }
+
+    return list;
   },
 };
 

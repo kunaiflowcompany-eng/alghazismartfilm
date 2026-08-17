@@ -1,48 +1,22 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+"use client";
+
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import { AutoVideo } from "@/components/media/AutoVideo";
-import { PageHero } from "@/components/sections/PageHero";
-import { FinalCta } from "@/components/sections/FinalCta";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { getApplications } from "@/content/localized";
 import { getDictionary } from "@/i18n";
-import { isLocale, localePath } from "@/i18n/config";
 import { cn } from "@/lib/cn";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
-  const { locale } = await params;
-  const t = getDictionary(isLocale(locale) ? locale : "en");
-  return { title: t.nav.applications, description: t.pageHero.applications.intro };
-}
-
-export default async function ApplicationsPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  if (!isLocale(locale)) notFound();
-
+/** One editorial band per application sector, in the active language. */
+export function ApplicationsDetail() {
+  const locale = useLocale();
   const d = getDictionary(locale);
-  const t = d.pageHero.applications;
   const applications = getApplications(locale);
 
   return (
     <>
-      <PageHero
-        eyebrow={t.eyebrow}
-        title={t.title}
-        accent={t.accent}
-        intro={t.intro}
-        media={{ kind: "image", src: "/media/img/hero-applications.webp", alt: t.alt }}
-      />
-
       {applications.map((app, i) => {
         const flipped = i % 2 === 1;
         const onWhite = i % 2 === 1;
@@ -101,7 +75,7 @@ export default async function ApplicationsPage({
                   </ul>
 
                   <div>
-                    <Button href={localePath("/contact", locale)} variant="outline">
+                    <Button href="/contact" variant="outline">
                       {d.common.discussSpace}
                     </Button>
                   </div>
@@ -111,8 +85,6 @@ export default async function ApplicationsPage({
           </section>
         );
       })}
-
-      <FinalCta locale={locale} variant="applications" />
     </>
   );
 }

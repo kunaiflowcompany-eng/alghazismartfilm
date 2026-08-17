@@ -1,9 +1,11 @@
+"use client";
+
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/SectionHeading";
 import { getOwner } from "@/content/localized";
 import { getDictionary } from "@/i18n";
-import type { Locale } from "@/i18n/config";
 
 /**
  * Leadership block.
@@ -12,7 +14,8 @@ import type { Locale } from "@/i18n/config";
  * When `owner.photo` is empty a designed placeholder panel is rendered so the
  * layout is complete and obviously awaiting content, rather than broken.
  */
-export function OwnerCard({ locale }: { locale: Locale }) {
+export function OwnerCard() {
+  const locale = useLocale();
   const owner = getOwner(locale);
   const t = getDictionary(locale).about.owner;
   return (

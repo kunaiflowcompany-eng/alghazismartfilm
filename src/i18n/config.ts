@@ -20,8 +20,3 @@ export const localeMeta: Record<
   ar: { label: "العربية", name: "Arabic", flag: "🇦🇪", short: "ع" },
 };
 
-/** Prefix an app path with the active locale: ("/about", "ar") → "/ar/about" */
-export function localePath(path: string, locale: Locale): string {
-  if (path === "/") return `/${locale}`;
-  return `/${locale}${path.startsWith("/") ? path : `/${path}`}`;
-}

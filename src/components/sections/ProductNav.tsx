@@ -1,14 +1,15 @@
 "use client";
 
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import { useEffect, useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { getProducts } from "@/content/localized";
 import { getDictionary } from "@/i18n";
-import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/cn";
 
 /** Sticky in-page index for the product bands. */
-export function ProductNav({ locale }: { locale: Locale }) {
+export function ProductNav() {
+  const locale = useLocale();
   const products = getProducts(locale);
   const t = getDictionary(locale).productDetail;
   const [active, setActive] = useState(products[0].slug);

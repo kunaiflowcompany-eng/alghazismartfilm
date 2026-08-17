@@ -1,12 +1,13 @@
+"use client";
+
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { Eyebrow } from "@/components/ui/SectionHeading";
 import { getDictionary } from "@/i18n";
-import { defaultLocale, localePath } from "@/i18n/config";
 
 export default function NotFound() {
-  // A not-found boundary cannot read route params, so it uses the default locale.
-  const locale = defaultLocale;
+  const locale = useLocale();
   const t = getDictionary(locale).notFound;
 
   return (
@@ -20,8 +21,8 @@ export default function NotFound() {
           </h1>
           <p className="lead max-w-[46ch] text-warm-white/65">{t.body}</p>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Button href={localePath("/", locale)}>{t.home}</Button>
-            <Button href={localePath("/products", locale)} variant="outline-dark">
+            <Button href="/">{t.home}</Button>
+            <Button href="/products" variant="outline-dark">
               {t.products}
             </Button>
           </div>

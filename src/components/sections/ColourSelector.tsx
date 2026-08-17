@@ -1,16 +1,17 @@
 "use client";
 
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import Image from "next/image";
 import { useState } from "react";
 import { cn } from "@/lib/cn";
 import type { Product } from "@/content/products";
 import { getDictionary } from "@/i18n";
-import type { Locale } from "@/i18n/config";
 
 type Variant = NonNullable<Product["colourVariants"]>[number];
 
 /** Crossfading tint selector for Coloured Smart Film. */
-export function ColourSelector({ variants, locale }: { variants: Variant[]; locale: Locale }) {
+export function ColourSelector({ variants }: { variants: Variant[] }) {
+  const locale = useLocale();
   const t = getDictionary(locale).productDetail;
   const [active, setActive] = useState(0);
 

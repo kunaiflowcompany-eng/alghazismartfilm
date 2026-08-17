@@ -1,7 +1,9 @@
+"use client";
+
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getDictionary } from "@/i18n";
-import type { Locale } from "@/i18n/config";
 
 /** Icons stay in code — only the wording is translated. */
 const icons = [
@@ -24,7 +26,8 @@ const icons = [
   </>,
 ];
 
-export function ProcessSection({ locale }: { locale: Locale }) {
+export function ProcessSection() {
+  const locale = useLocale();
   const t = getDictionary(locale).process;
 
   return (

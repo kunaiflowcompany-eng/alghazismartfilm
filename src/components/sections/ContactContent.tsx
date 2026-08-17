@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
+"use client";
+
 import { Suspense } from "react";
-import { notFound } from "next/navigation";
-import { PageHero } from "@/components/sections/PageHero";
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import { QuoteForm } from "@/components/forms/QuoteForm";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/SectionHeading";
@@ -10,17 +10,6 @@ import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { socialIcons } from "@/components/ui/SocialIcons";
 import { contact, mapsEmbed, mapsLink, whatsappHref } from "@/content/site";
 import { getDictionary } from "@/i18n";
-import { isLocale } from "@/i18n/config";
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
-  const { locale } = await params;
-  const t = getDictionary(isLocale(locale) ? locale : "en");
-  return { title: t.nav.contact, description: t.pageHero.contact.intro };
-}
 
 function Detail({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -31,25 +20,14 @@ function Detail({ label, children }: { label: string; children: React.ReactNode 
   );
 }
 
-export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
-  if (!isLocale(locale)) notFound();
-
+export function ContactContent() {
+  const locale = useLocale();
   const d = getDictionary(locale);
   const t = d.contact;
-  const hero = d.pageHero.contact;
   const social = contact.social.filter((s) => s.href);
 
   return (
     <>
-      <PageHero
-        eyebrow={hero.eyebrow}
-        title={hero.title}
-        accent={hero.accent}
-        intro={hero.intro}
-        media={{ kind: "image", src: "/media/img/hero-contact.webp", alt: hero.alt }}
-      />
-
       <section className="section-y bg-warm-white">
         <Container size="wide">
           <div className="grid gap-14 lg:grid-cols-[1.25fr_1fr] lg:gap-20">
@@ -65,7 +43,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
               <div className="mt-9 rounded-sm border border-line bg-white p-6 sm:p-9">
                 <Suspense fallback={<div className="h-[32rem]" aria-hidden="true" />}>
-                  <QuoteForm locale={locale} />
+                  <QuoteForm />
                 </Suspense>
               </div>
             </div>
@@ -98,7 +76,11 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                 </Detail>
 
                 <Detail label={t.phone}>
-                  <a href={contact.phone.href} dir="ltr" className="inline-block transition-colors hover:text-orange">
+                  <a
+                    href={contact.phone.href}
+                    dir="ltr"
+                    className="inline-block transition-colors hover:text-orange"
+                  >
                     {contact.phone.display}
                   </a>
                 </Detail>
@@ -116,7 +98,11 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                 </Detail>
 
                 <Detail label={t.email}>
-                  <a href={contact.email.href} dir="ltr" className="inline-block break-all transition-colors hover:text-orange">
+                  <a
+                    href={contact.email.href}
+                    dir="ltr"
+                    className="inline-block break-all transition-colors hover:text-orange"
+                  >
                     {contact.email.display}
                   </a>
                 </Detail>
@@ -148,7 +134,9 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                               {SocialIcon ? (
                                 <SocialIcon className="h-[19px] w-[19px]" />
                               ) : (
-                                <span className="text-[0.7rem] font-semibold uppercase">{s.label[0]}</span>
+                                <span className="text-[0.7rem] font-semibold uppercase">
+                                  {s.label[0]}
+                                </span>
                               )}
                               <span className="sr-only">{s.label}</span>
                             </a>

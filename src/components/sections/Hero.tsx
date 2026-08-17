@@ -1,11 +1,14 @@
+"use client";
+
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import { AutoVideo } from "@/components/media/AutoVideo";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { whatsappHref } from "@/content/site";
 import { getDictionary } from "@/i18n";
-import { localePath, type Locale } from "@/i18n/config";
 
-export function Hero({ locale }: { locale: Locale }) {
+export function Hero() {
+  const locale = useLocale();
   const t = getDictionary(locale).hero;
   const c = getDictionary(locale).common;
 
@@ -44,7 +47,7 @@ export function Hero({ locale }: { locale: Locale }) {
           <p className="lead mt-7 max-w-[46ch] text-warm-white/75">{t.lead}</p>
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:gap-4">
-            <Button href={localePath("/contact", locale)} size="lg">
+            <Button href={"/contact"} size="lg">
               {c.getQuote}
             </Button>
             <Button href={whatsappHref} external variant="whatsapp" size="lg">

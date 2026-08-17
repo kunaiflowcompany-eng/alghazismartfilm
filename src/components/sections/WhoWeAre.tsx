@@ -1,9 +1,11 @@
+"use client";
+
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { TextLink } from "@/components/ui/Button";
 import { getDictionary } from "@/i18n";
-import { localePath, type Locale } from "@/i18n/config";
 
 /** Capability icons stay in code — only the wording is translated. */
 const icons = [
@@ -26,7 +28,8 @@ const icons = [
   </>,
 ];
 
-export function WhoWeAre({ locale }: { locale: Locale }) {
+export function WhoWeAre() {
+  const locale = useLocale();
   const d = getDictionary(locale);
   const t = d.whoWeAre;
 
@@ -50,7 +53,7 @@ export function WhoWeAre({ locale }: { locale: Locale }) {
               <p>{t.p2}</p>
             </div>
 
-            <TextLink href={localePath("/about", locale)}>{d.common.moreAboutUs}</TextLink>
+            <TextLink href={"/about"}>{d.common.moreAboutUs}</TextLink>
           </div>
 
           {/* Image */}

@@ -1,3 +1,6 @@
+"use client";
+
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import Image from "next/image";
 import Link from "next/link";
 import { contact, site, whatsappHref } from "@/content/site";
@@ -6,7 +9,6 @@ import { Container } from "@/components/ui/Container";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { socialIcons } from "@/components/ui/SocialIcons";
 import { getDictionary } from "@/i18n";
-import { localePath, type Locale } from "@/i18n/config";
 
 function Icon({ d, circle }: { d: string; circle?: boolean }) {
   return (
@@ -17,7 +19,8 @@ function Icon({ d, circle }: { d: string; circle?: boolean }) {
   );
 }
 
-export function Footer({ locale }: { locale: Locale }) {
+export function Footer() {
+  const locale = useLocale();
   const t = getDictionary(locale);
   const year = new Date().getFullYear();
   const social = contact.social.filter((s) => s.href);
@@ -80,7 +83,7 @@ export function Footer({ locale }: { locale: Locale }) {
               {nav.map((item) => (
                 <li key={item.href}>
                   <Link
-                    href={localePath(item.href, locale)}
+                    href={item.href}
                     className="text-[0.92rem] text-warm-white/60 transition-colors duration-300 hover:text-orange"
                   >
                     {item.label}
@@ -97,7 +100,7 @@ export function Footer({ locale }: { locale: Locale }) {
               {products.map((p) => (
                 <li key={p.slug}>
                   <Link
-                    href={`${localePath("/products", locale)}#${p.slug}`}
+                    href={`/products#${p.slug}`}
                     className="text-[0.92rem] text-warm-white/60 transition-colors duration-300 hover:text-orange"
                   >
                     {p.shortName}

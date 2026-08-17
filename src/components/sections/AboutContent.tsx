@@ -1,26 +1,11 @@
-import type { Metadata } from "next";
+"use client";
+
 import Image from "next/image";
-import { notFound } from "next/navigation";
-import { PageHero } from "@/components/sections/PageHero";
-import { ProjectsSection } from "@/components/sections/ProjectsSection";
-import { ClientsSection } from "@/components/sections/ClientsSection";
-import { FinalCta } from "@/components/sections/FinalCta";
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
-import { OwnerCard } from "@/components/sections/OwnerCard";
 import { getDictionary } from "@/i18n";
-import { isLocale, localePath } from "@/i18n/config";
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
-  const { locale } = await params;
-  const t = getDictionary(isLocale(locale) ? locale : "en");
-  return { title: t.nav.about, description: t.pageHero.about.intro };
-}
 
 /** Icons stay in code — only the wording is translated. */
 const strengthIcons = [
@@ -46,25 +31,14 @@ const strengthIcons = [
   </>,
 ];
 
-export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
-  if (!isLocale(locale)) notFound();
-
+export function AboutContent() {
+  const locale = useLocale();
   const d = getDictionary(locale);
-  const hero = d.pageHero.about;
   const story = d.about.story;
   const strengths = d.about.strengths;
 
   return (
     <>
-      <PageHero
-        eyebrow={hero.eyebrow}
-        title={hero.title}
-        accent={hero.accent}
-        intro={hero.intro}
-        media={{ kind: "image", src: "/media/img/hero-about.webp", alt: hero.alt }}
-      />
-
       {/* Story */}
       <section className="section-y bg-warm-white">
         <Container size="wide">
@@ -94,8 +68,8 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
               </div>
 
               <div className="flex flex-col gap-3 sm:flex-row">
-                <Button href={localePath("/products", locale)}>{story.ctaProducts}</Button>
-                <Button href={localePath("/contact", locale)} variant="outline" withArrow={false}>
+                <Button href="/products">{story.ctaProducts}</Button>
+                <Button href="/contact" variant="outline" withArrow={false}>
                   {story.ctaContact}
                 </Button>
               </div>
@@ -145,15 +119,6 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           </ul>
         </Container>
       </section>
-
-      <OwnerCard locale={locale} />
-
-      {/* Same component as the Home page */}
-      <ProjectsSection locale={locale} variant="about" />
-
-      <ClientsSection locale={locale} />
-
-      <FinalCta locale={locale} variant="about" />
     </>
   );
 }

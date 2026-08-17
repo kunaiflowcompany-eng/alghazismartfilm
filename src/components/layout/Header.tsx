@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -10,10 +11,10 @@ import { Container } from "@/components/ui/Container";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { getDictionary } from "@/i18n";
-import { localePath, type Locale } from "@/i18n/config";
 import { cn } from "@/lib/cn";
 
-export function Header({ locale }: { locale: Locale }) {
+export function Header() {
+  const locale = useLocale();
   const t = getDictionary(locale);
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -49,7 +50,7 @@ export function Header({ locale }: { locale: Locale }) {
   }, []);
 
   const isActive = (href: string) => {
-    const full = localePath(href, locale);
+    const full = href;
     return href === "/" ? pathname === full : pathname.startsWith(full);
   };
 
@@ -72,7 +73,7 @@ export function Header({ locale }: { locale: Locale }) {
       >
         <Container size="wide">
           <div className="flex h-[72px] items-center justify-between gap-4 lg:h-[84px] lg:gap-6">
-            <Link href={localePath("/", locale)} aria-label={t.common.homeAria} className="shrink-0">
+            <Link href={"/"} aria-label={t.common.homeAria} className="shrink-0">
               <Image
                 src="/media/brand/logo-full-ondark.png"
                 alt="Al Ghazi Smart Film"
@@ -91,7 +92,7 @@ export function Header({ locale }: { locale: Locale }) {
                   return (
                     <li key={item.href}>
                       <Link
-                        href={localePath(item.href, locale)}
+                        href={item.href}
                         aria-current={active ? "page" : undefined}
                         className={cn(
                           "relative py-2 font-sans text-[0.72rem] font-semibold uppercase tracking-[0.16em] transition-colors duration-300",
@@ -115,11 +116,11 @@ export function Header({ locale }: { locale: Locale }) {
 
             <div className="flex items-center gap-2.5">
               <span className="hidden md:block">
-                <LanguageSwitcher locale={locale} />
+                <LanguageSwitcher />
               </span>
 
               <span className="hidden xl:block">
-                <Button href={localePath("/contact", locale)} size="md">
+                <Button href={"/contact"} size="md">
                   {t.common.getQuote}
                 </Button>
               </span>
@@ -179,7 +180,7 @@ export function Header({ locale }: { locale: Locale }) {
                 return (
                   <li key={item.href} className="border-b border-line-dark">
                     <Link
-                      href={localePath(item.href, locale)}
+                      href={item.href}
                       onClick={() => setOpen(false)}
                       aria-current={active ? "page" : undefined}
                       className={cn(
@@ -200,10 +201,10 @@ export function Header({ locale }: { locale: Locale }) {
 
           <div className="mt-8 flex flex-col gap-3">
             <div className="flex justify-center md:hidden">
-              <LanguageSwitcher locale={locale} />
+              <LanguageSwitcher />
             </div>
             <Button
-              href={localePath("/contact", locale)}
+              href={"/contact"}
               size="lg"
               className="w-full"
               onClick={() => setOpen(false)}

@@ -1,8 +1,10 @@
+"use client";
+
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { whatsappHref } from "@/content/site";
 import { getDictionary } from "@/i18n";
-import { localePath, type Locale } from "@/i18n/config";
 
 type Variant = "home" | "products" | "applications" | "about";
 
@@ -13,7 +15,8 @@ type Variant = "home" | "products" | "applications" | "about";
  * a word to highlight — that keeps the orange emphasis exact instead of relying
  * on a substring match, which does not survive translation.
  */
-export function FinalCta({ locale, variant = "home" }: { locale: Locale; variant?: Variant }) {
+export function FinalCta({ variant = "home" }: { variant?: Variant }) {
+  const locale = useLocale();
   const d = getDictionary(locale);
   const copy = d.finalCta[variant];
 
@@ -31,7 +34,7 @@ export function FinalCta({ locale, variant = "home" }: { locale: Locale; variant
           </div>
 
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
-            <Button href={localePath("/contact", locale)} size="lg">
+            <Button href={"/contact"} size="lg">
               {d.common.getQuote}
             </Button>
             <Button href={whatsappHref} external variant="whatsapp" size="lg">

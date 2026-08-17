@@ -1,3 +1,6 @@
+"use client";
+
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import Link from "next/link";
 import { AutoVideo } from "@/components/media/AutoVideo";
 import { Container } from "@/components/ui/Container";
@@ -5,10 +8,10 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { getApplications } from "@/content/localized";
 import { getDictionary } from "@/i18n";
-import { localePath, type Locale } from "@/i18n/config";
 
 /** Compact, media-led applications grid used on the Home page. */
-export function ApplicationsSection({ locale }: { locale: Locale }) {
+export function ApplicationsSection() {
+  const locale = useLocale();
   const d = getDictionary(locale);
   const t = d.applicationsSection;
   const applications = getApplications(locale);
@@ -21,7 +24,7 @@ export function ApplicationsSection({ locale }: { locale: Locale }) {
           </SectionHeading>
           <div className="flex max-w-[36ch] flex-col items-start gap-6">
             <p className="text-ink-muted">{t.lead}</p>
-            <Button href={localePath("/applications", locale)} variant="outline">
+            <Button href={"/applications"} variant="outline">
               {d.common.allApplications}
             </Button>
           </div>
@@ -32,7 +35,7 @@ export function ApplicationsSection({ locale }: { locale: Locale }) {
           {applications.map((app, i) => (
             <li key={app.slug} className="reveal" data-reveal-delay={(i % 2) * 90}>
               <Link
-                href={`${localePath("/applications", locale)}#${app.slug}`}
+                href={`/applications#${app.slug}`}
                 className="group flex h-full flex-col overflow-hidden rounded-sm border border-line bg-white transition-colors duration-500 hover:border-line-strong"
               >
                 <AutoVideo

@@ -1,16 +1,19 @@
+"use client";
+
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { getProjects } from "@/content/localized";
 import { getDictionary } from "@/i18n";
-import { localePath, type Locale } from "@/i18n/config";
 
 /**
  * Shared Projects section — rendered identically on Home and About Us.
  * There is deliberately no standalone /projects page.
  */
-export function ProjectsSection({ locale, variant = "home" }: { locale: Locale; variant?: "home" | "about" }) {
+export function ProjectsSection({ variant = "home" }: { variant?: "home" | "about" }) {
+  const locale = useLocale();
   const d = getDictionary(locale);
   const t = d.projects;
   const projects = getProjects(locale);
@@ -23,7 +26,7 @@ export function ProjectsSection({ locale, variant = "home" }: { locale: Locale; 
           </SectionHeading>
           <div className="flex max-w-[38ch] flex-col items-start gap-6">
             <p className="text-warm-white/60">{variant === "about" ? t.introAbout : t.introHome}</p>
-            <Button href={localePath("/contact", locale)} variant="outline-dark">
+            <Button href={"/contact"} variant="outline-dark">
               {d.common.discussProject}
             </Button>
           </div>

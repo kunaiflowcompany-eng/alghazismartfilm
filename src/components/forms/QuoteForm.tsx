@@ -1,11 +1,11 @@
 "use client";
 
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import { useId, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { ButtonSubmit } from "@/components/ui/Button";
 import { getProductOptions } from "@/content/localized";
 import { getDictionary } from "@/i18n";
-import type { Locale } from "@/i18n/config";
 import { getSupabase, type EnquiryInsert } from "@/lib/supabase";
 import { cn } from "@/lib/cn";
 
@@ -29,7 +29,8 @@ const labelCls = "eyebrow text-ink-soft";
  * publishable key. That table has RLS enabled with an INSERT-only policy, so the
  * browser can add a row but can never read, edit or delete existing enquiries.
  */
-export function QuoteForm({ locale }: { locale: Locale }) {
+export function QuoteForm() {
+  const locale = useLocale();
   const t = getDictionary(locale).form;
   const productOptions = getProductOptions(locale);
   const uid = useId();

@@ -1,3 +1,6 @@
+"use client";
+
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import Image from "next/image";
 import { AutoVideo } from "@/components/media/AutoVideo";
 import { Container } from "@/components/ui/Container";
@@ -6,14 +9,14 @@ import { Button } from "@/components/ui/Button";
 import { ColourSelector } from "@/components/sections/ColourSelector";
 import type { Product } from "@/content/products";
 import { getDictionary } from "@/i18n";
-import { localePath, type Locale } from "@/i18n/config";
 import { cn } from "@/lib/cn";
 
 /**
  * Full product presentation — one alternating editorial band per product.
  * Reused for every product so the range stays visually consistent.
  */
-export function ProductDetail({ product, index, locale }: { product: Product; index: number; locale: Locale }) {
+export function ProductDetail({ product, index }: { product: Product; index: number }) {
+  const locale = useLocale();
   const d = getDictionary(locale);
   const t = d.productDetail;
   const flipped = index % 2 === 1;
@@ -35,7 +38,7 @@ export function ProductDetail({ product, index, locale }: { product: Product; in
           {/* Media — pinned while the longer copy column scrolls past it */}
           <div className={cn("reveal lg:sticky lg:top-40", flipped && "lg:order-2")}>
             {product.colourVariants ? (
-              <ColourSelector variants={product.colourVariants} locale={locale} />
+              <ColourSelector variants={product.colourVariants} />
             ) : product.media.kind === "video" ? (
               <AutoVideo
                 src={product.media.src}
@@ -145,10 +148,10 @@ export function ProductDetail({ product, index, locale }: { product: Product; in
             </div>
 
             <div className="flex flex-col gap-3 pt-2 sm:flex-row">
-              <Button href={`${localePath("/contact", locale)}?product=${encodeURIComponent(product.name)}`}>
+              <Button href={`/contact?product=${encodeURIComponent(product.name)}`}>
                 {d.common.requestQuote}
               </Button>
-              <Button href={localePath("/applications", locale)} variant="outline" withArrow={false}>
+              <Button href={"/applications"} variant="outline" withArrow={false}>
                 {d.common.seeItInPlace}
               </Button>
             </div>

@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { notFound } from "next/navigation";
 import { Barlow_Condensed, Inter, Cairo, IBM_Plex_Sans_Arabic } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Reveal } from "@/components/util/Reveal";
+import { LanguageProvider, localeBootstrapScript } from "@/components/i18n/LanguageProvider";
 import { site } from "@/content/site";
-import { getDictionary } from "@/i18n";
-import { dirOf, isLocale, locales, type Locale } from "@/i18n/config";
-import "../globals.css";
+import { SITE_URL } from "@/lib/seo";
+import { defaultLocale, dirOf } from "@/i18n/config";
+import "./globals.css";
 
 /* --- Latin type: the approved brand pairing --------------------------------- */
 const barlowCondensed = Barlow_Condensed({
@@ -43,39 +43,16 @@ const plexArabic = IBM_Plex_Sans_Arabic({
   display: "swap",
 });
 
-export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
-}
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
-  const { locale } = await params;
-  const active: Locale = isLocale(locale) ? locale : "en";
-  const isAr = active === "ar";
-
-  return {
-    metadataBase: new URL(site.url),
-    title: {
-      default: isAr ? "الغازي للفيلم الذكي — تقنية الخصوصية الذكية" : `${site.name} — ${site.tagline}`,
-      template: isAr ? `%s — الغازي للفيلم الذكي` : `%s — ${site.name}`,
-    },
-    description: getDictionary(active).footer.description,
-    alternates: {
-      canonical: `/${active}`,
-      languages: { en: "/en", ar: "/ar" },
-    },
-    openGraph: {
-      type: "website",
-      locale: isAr ? "ar_AE" : "en_AE",
-      siteName: site.name,
-      description: getDictionary(active).footer.description,
-    },
-    robots: { index: true, follow: true },
-  };
-}
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${site.name} — Smart Glass & Smart Film in Dubai, UAE`,
+    template: `%s | ${site.name}`,
+  },
+  description: site.description,
+  applicationName: site.name,
+  robots: { index: true, follow: true },
+};
 
 export const viewport: Viewport = {
   themeColor: "#111315",
@@ -83,22 +60,20 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default async function LocaleLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  if (!isLocale(locale)) notFound();
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const fonts = `${barlowCondensed.variable} ${inter.variable} ${cairo.variable} ${plexArabic.variable}`;
 
   return (
-    // suppressHydrationWarning: the inline script below adds `js` to this
-    // element before React hydrates, which is an expected className mismatch.
-    <html lang={locale} dir={dirOf(locale)} className={fonts} suppressHydrationWarning>
+    // Server always renders English — that is the indexed language. A returning
+    // Arabic visitor's choice is re-applied by the bootstrap script and provider.
+    // suppressHydrationWarning: those scripts mutate lang/dir/class before React
+    // hydrates, which is an expected mismatch.
+    <html
+      lang={defaultLocale}
+      dir={dirOf(defaultLocale)}
+      className={fonts}
+      suppressHydrationWarning
+    >
       <head>
         {/*
           Marks scripting as available before first paint. Scroll reveals are
@@ -107,11 +82,15 @@ export default async function LocaleLayout({
         <script
           dangerouslySetInnerHTML={{ __html: `document.documentElement.classList.add('js')` }}
         />
+        {/* Restores a stored Arabic choice before paint so there is no LTR flash */}
+        <script dangerouslySetInnerHTML={{ __html: localeBootstrapScript }} />
       </head>
       <body className="antialiased">
-        <Header locale={locale} />
-        <main id="main">{children}</main>
-        <Footer locale={locale} />
+        <LanguageProvider>
+          <Header />
+          <main id="main">{children}</main>
+          <Footer />
+        </LanguageProvider>
         <Reveal />
       </body>
     </html>

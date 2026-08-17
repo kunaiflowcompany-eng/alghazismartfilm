@@ -1,12 +1,12 @@
 "use client";
 
+import { useLocale } from "@/components/i18n/LanguageProvider";
 import Image from "next/image";
 import { useCallback, useId, useRef, useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/cn";
 import { getDictionary } from "@/i18n";
-import type { Locale } from "@/i18n/config";
 
 /**
  * The core brand device: clear ⟷ privacy.
@@ -15,7 +15,8 @@ import type { Locale } from "@/i18n/config";
  * fully clear (charcoal) and 0 is fully private (orange). Drag the divider or
  * use the segmented control; both write to the same value.
  */
-export function PrivacyExperience({ locale }: { locale: Locale }) {
+export function PrivacyExperience() {
+  const locale = useLocale();
   const t = getDictionary(locale).privacy;
   const [reveal, setReveal] = useState(52);
   const [dragging, setDragging] = useState(false);
