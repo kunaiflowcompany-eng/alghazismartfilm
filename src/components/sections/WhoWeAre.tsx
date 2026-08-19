@@ -26,6 +26,12 @@ const icons = [
     <path d="M3 10.4 12 3l9 7.4V21H3V10.4Z" />
     <path d="M9.4 21v-6.2h5.2V21" />
   </>,
+  <>
+    <path d="M3.4 9.4h3.3L11 5.9v12.2L6.7 14.6H3.4z" />
+    <path d="M14.6 9.2a4 4 0 0 1 0 5.6" />
+    <path d="M17.4 6.5a7.7 7.7 0 0 1 0 11" />
+    <path d="M21 4.4 13.9 19.6" />
+  </>,
 ];
 
 export function WhoWeAre() {
@@ -75,7 +81,7 @@ export function WhoWeAre() {
         </div>
 
         {/* Capability rail */}
-        <ul className="mt-16 grid gap-px border-t border-line bg-line sm:grid-cols-2 lg:mt-24 lg:grid-cols-4">
+        <ul className="mt-16 grid gap-px border-t border-line bg-line sm:grid-cols-2 lg:mt-24 lg:grid-cols-3 xl:grid-cols-5">
           {t.capabilities.map((c, i) => (
             <li
               key={c.title}

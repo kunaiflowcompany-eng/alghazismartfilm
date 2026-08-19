@@ -7,7 +7,8 @@ import { AutoVideo } from "@/components/media/AutoVideo";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
-import { type Product } from "@/content/products";
+import { ControlMethods } from "@/components/sections/ControlMethods";
+import { hasSmartControls, type Product } from "@/content/products";
 import { getProducts } from "@/content/localized";
 import { getDictionary } from "@/i18n";
 import { cn } from "@/lib/cn";
@@ -61,6 +62,8 @@ function ProductCard({ product, feature = false }: { product: Product; feature?:
             </li>
           ))}
         </ul>
+
+        {hasSmartControls(product.slug) && <ControlMethods variant="card" />}
 
         <span className="mt-3 inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-orange">
           {t.exploreProduct}

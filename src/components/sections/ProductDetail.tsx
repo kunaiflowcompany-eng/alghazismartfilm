@@ -7,7 +7,8 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { ColourSelector } from "@/components/sections/ColourSelector";
-import type { Product } from "@/content/products";
+import { ControlMethods } from "@/components/sections/ControlMethods";
+import { hasSmartControls, type Product } from "@/content/products";
 import { getDictionary } from "@/i18n";
 import { cn } from "@/lib/cn";
 
@@ -119,6 +120,9 @@ export function ProductDetail({ product, index }: { product: Product; index: num
                 ))}
               </ul>
             </div>
+
+            {/* Control methods — switchable products only */}
+            {hasSmartControls(product.slug) && <ControlMethods />}
 
             {/* Specifications — only where verified data exists */}
             {product.specs && (

@@ -1,6 +1,5 @@
 import { PageHero } from "@/components/sections/PageHero";
 import { AboutContent } from "@/components/sections/AboutContent";
-import { OwnerCard } from "@/components/sections/OwnerCard";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { ClientsSection } from "@/components/sections/ClientsSection";
 import { FinalCta } from "@/components/sections/FinalCta";
@@ -19,7 +18,6 @@ export default function AboutPage() {
     <>
       <PageHero page="about" image="/media/img/hero-about.webp" />
       <AboutContent />
-      <OwnerCard />
       <ProjectsSection variant="about" />
       <ClientsSection />
       <FinalCta variant="about" />

@@ -2,7 +2,7 @@
 
 import { useLocale } from "@/components/i18n/LanguageProvider";
 import Image from "next/image";
-import { useCallback, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/cn";
@@ -13,12 +13,14 @@ import { getDictionary } from "@/i18n";
  *
  * `reveal` is the percentage of the frame showing the CLEAR state, so 100 is
  * fully clear (charcoal) and 0 is fully private (orange). Drag the divider or
- * use the segmented control; both write to the same value.
+ * hit the On/Off control; both write to the same value.
+ *
+ * Privacy starts ON, so the frame opens fully private.
  */
 export function PrivacyExperience() {
   const locale = useLocale();
   const t = getDictionary(locale).privacy;
-  const [reveal, setReveal] = useState(52);
+  const [reveal, setReveal] = useState(0);
   const [dragging, setDragging] = useState(false);
   const frameRef = useRef<HTMLDivElement>(null);
   const labelId = useId();
@@ -48,10 +50,29 @@ export function PrivacyExperience() {
     }
   };
 
-  const isClear = reveal > 50;
+  /* Privacy is "on" whenever the frame is showing more private than clear, so
+     dragging the divider keeps the control in step with the image. */
+  const isOn = reveal <= 50;
+
+  /* The thumb travels to the button for the current state and stays there — the
+     press is a one-shot on arrival, never a return to a resting pose. Skipped on
+     first paint so the remote simply loads already switched on. */
+  const [pressing, setPressing] = useState(false);
+  const settled = useRef(false);
+  useEffect(() => {
+    if (!settled.current) {
+      settled.current = true;
+      return;
+    }
+    setPressing(true);
+    const id = window.setTimeout(() => setPressing(false), 640);
+    return () => window.clearTimeout(id);
+  }, [isOn]);
 
   return (
-    <section className="section-y bg-warm-white">
+    // Not `section-y`: the top is tightened a little and the bottom a lot,
+    // because the remote's faded forearm now occupies the lower whitespace.
+    <section className="bg-warm-white pt-[clamp(3.5rem,6.5vw,6.5rem)] pb-[clamp(1.5rem,2.5vw,2.75rem)]">
       <Container size="wide">
         <div className="reveal flex flex-col items-center gap-5 text-center">
           <SectionHeading eyebrow={t.eyebrow} align="center" size="lg" accent={t.headingAccent}>
@@ -145,56 +166,127 @@ export function PrivacyExperience() {
             </div>
           </div>
 
-          {/* Segmented control */}
+          {/* Single On/Off control — one button, two states */}
           <div className="mt-8 flex flex-col items-center gap-4">
             <p id={labelId} className="sr-only">
               {t.groupLabel}
             </p>
-            <div
-              role="group"
-              aria-labelledby={labelId}
-              className="inline-flex rounded-xs border border-line p-1"
-            >
+
+            {/* The halo is a sibling, not a shadow, so the pulse never reflows the column */}
+            <span className="privacy-toggle-wrap relative inline-flex">
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "privacy-toggle-halo pointer-events-none absolute inset-0 rounded-full transition-colors duration-300",
+                  isOn ? "bg-orange/35" : "bg-charcoal/25",
+                )}
+              />
               <button
                 type="button"
-                onClick={() => setReveal(100)}
-                aria-pressed={isClear}
+                role="switch"
+                aria-checked={isOn}
+                aria-labelledby={labelId}
+                onClick={() => setReveal(isOn ? 100 : 0)}
                 className={cn(
-                  "inline-flex items-center gap-2.5 px-5 py-3 text-[0.7rem] font-semibold uppercase tracking-[0.16em] transition-colors duration-300",
-                  isClear ? "bg-charcoal text-warm-white" : "text-ink-muted hover:text-ink",
+                  "privacy-toggle relative block h-[52px] w-[152px] rounded-full transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-4",
+                  isOn
+                    ? "bg-orange focus-visible:outline-orange"
+                    : "bg-charcoal focus-visible:outline-charcoal",
                 )}
               >
+                {/* Knob — logical inset so it slides the correct way in Arabic too */}
                 <span
                   aria-hidden="true"
-                  className={cn(
-                    "h-2 w-2 rounded-full transition-colors duration-300",
-                    isClear ? "bg-warm-white" : "bg-ink-soft/50",
-                  )}
+                  className="absolute top-1/2 h-10 w-10 -translate-y-1/2 rounded-full bg-white shadow-[0_2px_8px_rgba(17,19,21,0.3)] transition-[inset-inline-start] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                  style={{ insetInlineStart: isOn ? "106px" : "6px" }}
                 />
-                {t.clear}
-              </button>
-              <button
-                type="button"
-                onClick={() => setReveal(0)}
-                aria-pressed={!isClear}
-                className={cn(
-                  "inline-flex items-center gap-2.5 px-5 py-3 text-[0.7rem] font-semibold uppercase tracking-[0.16em] transition-colors duration-300",
-                  !isClear ? "bg-orange text-white" : "text-ink-muted hover:text-ink",
-                )}
-              >
+                {/* Label sits in whichever half the knob is not occupying */}
                 <span
-                  aria-hidden="true"
-                  className={cn(
-                    "h-2 w-2 rounded-full transition-colors duration-300",
-                    !isClear ? "bg-white" : "bg-ink-soft/50",
-                  )}
-                />
-                {t.private}
+                  className="absolute top-1/2 w-[100px] -translate-y-1/2 text-center text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-white transition-[inset-inline-start] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                  style={{ insetInlineStart: isOn ? "6px" : "46px" }}
+                >
+                  {isOn ? t.on : t.off}
+                </span>
               </button>
-            </div>
+            </span>
+
             <p className="text-[0.8rem] text-ink-soft">
               {t.noteBefore}<span className="font-semibold text-ink">{t.noteStrong}</span>{t.noteAfter}
             </p>
+
+            {/*
+              Remote demo. Decorative only — the switch above is the single
+              control, so this is aria-hidden and takes no pointer events.
+
+              Geometry is measured, not eyeballed. In the remote artwork the
+              four rules sit at 20.1 / 30.6 / 41.3 / 51.5% of the body height,
+              so the ON cell is 20.1–30.6% and the OFF cell 41.3–51.5%. The
+              fingertip sits at 95.4% across / 0% down its own frame. Hand size
+              (2.02x the remote width) and the fingertip targets come from the
+              supplied reference composites, matched by finger-width profile.
+
+              Everything is expressed against the stage width so the whole
+              composition — finger entering from the lower left, remote to the
+              right — scales as one unit. Physical `left`/`ml` rather than
+              logical, because the artwork itself does not mirror in Arabic.
+            */}
+            <figure
+              aria-hidden="true"
+              className={cn(
+                // The remote sits at 81.28% across the stage, so the stage is
+                // pulled left by 31.28% of its own width to park the remote
+                // dead under the switch. The finger simply follows it left.
+                "pointer-events-none mx-auto -translate-x-[31.28%]",
+                // Fixed px, not %: percentage padding resolves against the
+                // parent container's width, not the stage's, which blew the
+                // reserved space out to 421px and left a huge hole below.
+                "mt-10 w-[250px] pb-[84px] sm:w-[320px] sm:pb-[108px] lg:mt-12 lg:w-[380px] lg:pb-[128px]",
+              )}
+            >
+              <div className="relative">
+                {/* Remote — in flow, so it sets the stage height */}
+                <div className="relative ml-[62.56%] w-[37.44%]">
+                  <Image
+                    src="/media/img/remote.png"
+                    alt=""
+                    width={300}
+                    height={824}
+                    sizes="142px"
+                    className="block h-auto w-full"
+                  />
+                  <span
+                    className={cn(
+                      "privacy-btn-glow privacy-btn-glow--on absolute",
+                      isOn ? "opacity-100" : "opacity-0",
+                      isOn && pressing && "privacy-btn-flash",
+                    )}
+                    style={{ left: "12.65%", width: "75.05%", top: "20.1%", height: "10.5%" }}
+                  />
+                  <span
+                    className={cn(
+                      "privacy-btn-glow privacy-btn-glow--off absolute",
+                      isOn ? "opacity-0" : "opacity-100",
+                      !isOn && pressing && "privacy-btn-flash",
+                    )}
+                    style={{ left: "12.65%", width: "75.05%", top: "41.3%", height: "10.2%" }}
+                  />
+                </div>
+
+                {/* Finger — max-w-none, the global img reset would clamp it */}
+                <Image
+                  src="/media/img/remote-finger.png"
+                  alt=""
+                  width={580}
+                  height={710}
+                  sizes="287px"
+                  className={cn(
+                    "privacy-finger absolute w-[75.59%] max-w-none transition-[top] duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
+                    pressing && "privacy-finger-press",
+                  )}
+                  style={{ left: "0%", top: isOn ? "20.5%" : "42.3%" }}
+                />
+              </div>
+            </figure>
           </div>
         </div>
       </Container>

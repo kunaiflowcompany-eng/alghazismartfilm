@@ -44,6 +44,7 @@ export const products: Product[] = [
     benefits: [
       "High clarity — the film sits directly between two glass layers for optimal transparency",
       "Suitable for outdoor and commercial settings as privacy and projection screens",
+      "Soundproof performance",
       "Longer lifespan, with the PDLC film fully concealed within the sandwiched glass",
       "Easy to clean, finished with a protective layer of silicon",
       "Seamless integration into the architecture",
@@ -77,13 +78,14 @@ export const products: Product[] = [
     benefits: [
       "Retrofits onto existing windows, partitions and doors",
       "Instant privacy — no curtains, blinds or roller shades",
+      "Soundproof performance",
       "No moving parts, so nothing to tangle, wear out or get stuck",
       "Easy to clean with an occasional wipe down",
       "Wires and busbars concealed for a finished appearance",
     ],
     applications: ["Corporate offices", "Meeting rooms", "Residential", "Healthcare", "Retail"],
     specs: [
-      { label: "Maximum size", value: "1.8 × 6 metres" },
+      { label: "Maximum size", value: "2 × 6 metres" },
       { label: "Minimum size", value: "200 mm × 200 mm" },
       { label: "Power consumption", value: "5 W / m²" },
       { label: "Light transmittance", value: "90% total" },
@@ -216,6 +218,10 @@ export const products: Product[] = [
     ],
   },
 ];
+
+/** Products controlled by the mobile app and the smart remote. */
+export const smartControlSlugs = ["smart-glass", "smart-film"];
+export const hasSmartControls = (slug: string) => smartControlSlugs.includes(slug);
 
 export const productBySlug = (slug: string) => products.find((p) => p.slug === slug);
 

@@ -38,7 +38,7 @@ export const en = {
   hero: {
     eyebrow: "Instant Privacy · Modern Living",
     titleBefore: "Smart glass & ",
-    titleAccent: "smart film",
+    titleAccent: "smart privacy film",
     titleAfter: " solutions for modern spaces",
     lead: "Switchable privacy, UV and heat control, and premium comfort across residential, commercial and corporate interiors in the UAE — all with a touch.",
     stats: [
@@ -62,6 +62,7 @@ export const en = {
       { title: "UV & Heat Protection", body: "99.5% UV block reduces glare and protects interior finishes from fading." },
       { title: "Premium Quality", body: "High-performance PDLC film with up to a 5-year warranty and no moving parts." },
       { title: "Smart Integration", body: "Works with home and building automation — 0–10 V, DMX and RS485 available." },
+      { title: "Soundproof", body: "A laminated acoustic layer that softens sound transfer between spaces." },
     ],
   },
 
@@ -72,6 +73,8 @@ export const en = {
     lead: "The same villa, the same glazing, one instruction. Drag the divider to move between states, or switch it yourself.",
     clear: "Clear",
     private: "Private",
+    on: "On",
+    off: "Off",
     sliderLabel: "Reveal the clear glass state",
     groupLabel: "Glass privacy state",
     noteBefore: "Switching takes ",
@@ -200,6 +203,13 @@ export const en = {
       intro: "Tell us about the space. We will recommend the right product and come back with a price.",
       alt: "An Al Ghazi team member taking a call at the office",
     },
+  },
+
+  controls: {
+    title: "How you control it",
+    lead: "Control your smart privacy system via mobile application or smart remote.",
+    mobileApp: "Mobile Application",
+    smartRemote: "Smart Remote",
   },
 
   productDetail: {
