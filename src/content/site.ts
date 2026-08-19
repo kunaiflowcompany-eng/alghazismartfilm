@@ -61,9 +61,8 @@ export const contact = {
   social: [
     /** Handle @alghazismartfilm, taken from the supplied account screenshot */
     { label: "Instagram", href: "https://www.instagram.com/alghazismartfilm" },
-    /** ⚠ NEEDS_CONFIRMATION — no Facebook URL was supplied. Paste it here and
-     *  the icon appears automatically in the footer and on the Contact page. */
-    { label: "Facebook", href: "" },
+    /** Page URL supplied by the client */
+    { label: "Facebook", href: "https://www.facebook.com/profile.php?id=61592985217760" },
     { label: "LinkedIn", href: "" },
   ],
 };

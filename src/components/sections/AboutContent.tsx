@@ -5,6 +5,8 @@ import { useLocale } from "@/components/i18n/LanguageProvider";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
+import { socialIcons } from "@/components/ui/SocialIcons";
+import { contact } from "@/content/site";
 import { getDictionary } from "@/i18n";
 
 /** Icons stay in code — only the wording is translated. */
@@ -36,6 +38,7 @@ export function AboutContent() {
   const d = getDictionary(locale);
   const story = d.about.story;
   const strengths = d.about.strengths;
+  const social = contact.social.filter((s) => s.href);
 
   return (
     <>
@@ -73,6 +76,37 @@ export function AboutContent() {
                   {story.ctaContact}
                 </Button>
               </div>
+
+              {/* Social — same glyphs and button treatment as the Contact page */}
+              {social.length > 0 && (
+                <div className="flex items-center gap-4 border-t border-line pt-6">
+                  <span className="eyebrow text-ink-soft">{d.contact.followUs}</span>
+                  <ul className="flex gap-2.5">
+                    {social.map((s) => {
+                      const SocialIcon = socialIcons[s.label];
+                      return (
+                        <li key={s.label}>
+                          <a
+                            href={s.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex h-11 w-11 items-center justify-center rounded-xs border border-line text-ink-muted transition-colors duration-300 hover:border-orange hover:text-orange"
+                          >
+                            {SocialIcon ? (
+                              <SocialIcon className="h-[19px] w-[19px]" />
+                            ) : (
+                              <span className="text-[0.7rem] font-semibold uppercase">
+                                {s.label[0]}
+                              </span>
+                            )}
+                            <span className="sr-only">{s.label}</span>
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </Container>

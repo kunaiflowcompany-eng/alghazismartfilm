@@ -180,9 +180,9 @@ export const applicationsAr: Record<string, Partial<Application>> = {
 };
 
 export const projectsAr: Record<string, Partial<Project>> = {
-  "project-1": { title: "قاطع مكتبي يحمل الهوية", scope: "Frosted Sticker Film" },
-  "project-2": { title: "زجاج جناح تنفيذي", scope: "Frosted Sticker Film" },
-  "project-3": { title: "جدار خصوصية لقاعة اجتماعات", scope: "تركيب فيلم خصوصية" },
+  "project-1": { title: "قاطع خصوصية لقاعة اجتماعات", scope: "Smart Film" },
+  "project-2": { title: "حاجز زجاجي بزخرفة مطبوعة", scope: "Frosted Sticker Film" },
+  "project-3": { title: "زجاج غرفة معيشة على الواجهة البحرية", scope: "Smart Film" },
 };
 
 /** Owner bio in Arabic — name and title stay as supplied */
