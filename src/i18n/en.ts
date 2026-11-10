@@ -169,6 +169,7 @@ export const en = {
     products: "Products",
     contact: "Contact Us",
     rights: "All rights reserved.",
+    privacyPolicy: "Privacy Policy",
     tagline: "Smart glass · Smart film · Surface protection · United Arab Emirates",
     description:
       "Al Ghazi Smart Film supplies and installs switchable smart glass, PDLC smart film, frosted sticker film and interior surface protection film for residential, commercial and corporate spaces across the UAE.",
@@ -202,6 +203,13 @@ export const en = {
       accent: "quote",
       intro: "Tell us about the space. We will recommend the right product and come back with a price.",
       alt: "An Al Ghazi team member taking a call at the office",
+    },
+    privacy: {
+      eyebrow: "Legal",
+      title: "Privacy ",
+      accent: "policy",
+      intro: "What we collect when you enquire, why we collect it, and how to have it removed.",
+      alt: "The Al Ghazi office reception",
     },
   },
 

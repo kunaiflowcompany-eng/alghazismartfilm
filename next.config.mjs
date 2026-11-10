@@ -8,7 +8,7 @@
  */
 
 /** Public routes, used to build the legacy /en and /ar redirects below. */
-const PAGES = ["/about", "/products", "/applications", "/contact"];
+const PAGES = ["/about", "/products", "/applications", "/contact", "/privacy-policy"];
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

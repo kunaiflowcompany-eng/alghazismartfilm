@@ -155,7 +155,15 @@ export function Footer() {
           <p>
             © {year} {site.legalName}. {t.footer.rights}
           </p>
-          <p>{t.footer.tagline}</p>
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-6">
+            <p>{t.footer.tagline}</p>
+            <Link
+              href="/privacy-policy"
+              className="transition-colors duration-300 hover:text-orange"
+            >
+              {t.footer.privacyPolicy}
+            </Link>
+          </div>
         </div>
       </Container>
     </footer>

@@ -17,6 +17,7 @@ export const routes = [
   { path: "/products", priority: 0.9, changeFrequency: "monthly" as const },
   { path: "/applications", priority: 0.8, changeFrequency: "monthly" as const },
   { path: "/contact", priority: 0.7, changeFrequency: "yearly" as const },
+  { path: "/privacy-policy", priority: 0.3, changeFrequency: "yearly" as const },
 ];
 
 const OG_IMAGE = "/media/video/hero-poster.jpg";

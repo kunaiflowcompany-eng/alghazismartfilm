@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/SectionHeading";
 import { getDictionary } from "@/i18n";
 
-type PageKey = "about" | "products" | "applications" | "contact";
+type PageKey = "about" | "products" | "applications" | "contact" | "privacy";
 
 /**
  * Compact full-width banner (~400–480px on desktop) used by every page except
